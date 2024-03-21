@@ -5,11 +5,11 @@ export const getShift = async (req, res) => {
     try {
         const shifts = await Shift.find();
         if (shifts.length === 0) {
-            return res.json({ Message: "No Shift Avaiable." })
+            return res.status(404).json({ Message: "No Shift Avaiable." })
         }
-        res.json(shifts)
+        res.status(200).json(shifts)
     } catch (error) {
-        return res.json({ Message: "Internal Server Error." })
+        return res.status(500).json({ Message: "Internal Server Error." })
 
     }
 }
@@ -21,12 +21,12 @@ export const addShift = async (req, res) => {
         const { name } = shiftData;
         const shiftExist = await Shift.findOne({ name })
         if (shiftExist) {
-            return res.json({ Message: "Shift already Exist" })
+            return res.status(409).json({ Message: "Shift already Exist" })
         }
         const savedShift = await shiftData.save();
-        res.json(savedShift)
+        res.status(201).json(savedShift)
     } catch (error) {
-        return res.json({ Message: "Internal Server Error." })
+        return res.status(500).json({ Message: "Internal Server Error." })
     }
 }
 
@@ -36,12 +36,12 @@ export const updateShift = async (req, res) => {
         const id = req.params.id
         const shiftExist = await Shift.findOne({ _id: id })
         if (!shiftExist) {
-            return res.json({ Message: "Shift not found" })
+            return res.status(404).json({ Message: "Shift not found" })
         }
         const updateShift = await Shift.findByIdAndUpdate(id, req.body, { new: true });
-        res.json(updateShift)
+        res.status(204).json(updateShift)
     } catch (error) {
-        return res.json({ Message: "Internal Server Error." })
+        return res.status(500).json({ Message: "Internal Server Error." })
 
     }
 }
@@ -52,11 +52,11 @@ export const deleteShift = async (req, res) => {
         const id = req.params.id
         const shiftExist = await Shift.findOne({ _id: id })
         if (!shiftExist) {
-            return res.json({ Message: "Shift not found" })
+            return res.status(404).json({ Message: "Shift not found" })
         }
         await Shift.findByIdAndDelete(id, req.body, { new: true });
-        res.json({ Message: "Shift deleted successfully" })
+        res.status(204).json({ Message: "Shift deleted successfully" })
     } catch (error) {
-        return res.json({ Message: "Internal Server Error." })
+        return res.status(500).json({ Message: "Internal Server Error." })
     }
 }

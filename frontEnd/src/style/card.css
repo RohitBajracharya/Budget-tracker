@@ -1,0 +1,88 @@
+body {
+  background-color: rgb(27, 26, 26);
+  font-family: "Segoe UI", sans-serif;
+}
+.page-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.card-container {
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: white;
+  height: auto;
+  width: 500px;
+}
+
+.title-lg {
+  color: black;
+  font-size: 24px;
+  margin-bottom: 0;
+}
+.title-md {
+  color: rgb(96, 96, 96);
+  font-size: 16px;
+}
+.title-sm {
+  margin-top: 10px;
+  color: rgb(138, 138, 138);
+}
+.total-budget {
+  color: rgb(62, 188, 4);
+}
+.under-container {
+  width: auto;
+  background-color: rgb(213, 213, 213);
+  height: 30px;
+  border-radius: 10px;
+}
+.upper-container {
+  width: 40%;
+  background-color: rgb(62, 188, 4);
+  height: 30px;
+  border-radius: 10px;
+}
+.budget-spent {
+  color: black;
+  font-weight: bold;
+}
+.top-budget {
+  font-size: 18px;
+  font-weight: bold;
+}
+.top-budget-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.suffix-icon {
+  color: rgb(99, 98, 98);
+}
+.shift-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgb(121, 121, 121);
+}
+.name-icon-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.icon-container {
+  background-color: rgb(128, 24, 255);
+  color: rgb(30, 1, 66);
+  width: 20px;
+  padding: 10px;
+  border-radius: 50%;
+  margin-right: 20px;
+}
+.shift-item {
+  align-items: center;
+  height: 20px;
+}
