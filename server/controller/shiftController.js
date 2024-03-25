@@ -1,9 +1,10 @@
-import Shift from "../model/shiftModel.js";
+const Shift = require("../model/shiftModel.js")
+const { getAllShifts, findExistingShift, saveShift, findShiftById, updateShiftById, deleteShiftById } = require("../services/shiftService.js")
 
 //get all shift
-export const getShift = async (req, res) => {
+const getShift = async (req, res) => {
     try {
-        const shifts = await Shift.find();
+        const shifts = await getAllShifts();
         if (shifts.length === 0) {
             return res.status(404).json({ Message: "No Shift Avaiable." })
         }
@@ -15,15 +16,14 @@ export const getShift = async (req, res) => {
 }
 
 // to add new shift
-export const addShift = async (req, res) => {
+const addShift = async (req, res) => {
     try {
-        const shiftData = new Shift(req.body)
-        const { name } = shiftData;
-        const shiftExist = await Shift.findOne({ name })
+        const { name, budgetSpent, budgetAvailable } = new Shift(req.body)
+        const shiftExist = await findExistingShift(name);
         if (shiftExist) {
             return res.status(409).json({ Message: "Shift already Exist" })
         }
-        const savedShift = await shiftData.save();
+        const savedShift = await saveShift(name, budgetSpent, budgetAvailable);
         res.status(201).json(savedShift)
     } catch (error) {
         return res.status(500).json({ Message: "Internal Server Error." })
@@ -31,14 +31,14 @@ export const addShift = async (req, res) => {
 }
 
 //to update shift
-export const updateShift = async (req, res) => {
+const updateShift = async (req, res) => {
     try {
         const id = req.params.id
-        const shiftExist = await Shift.findOne({ _id: id })
+        const shiftExist = await findShiftById(id);
         if (!shiftExist) {
             return res.status(404).json({ Message: "Shift not found" })
         }
-        const updateShift = await Shift.findByIdAndUpdate(id, req.body, { new: true });
+        const updateShift = await updateShiftById(id, req);
         res.status(204).json(updateShift)
     } catch (error) {
         return res.status(500).json({ Message: "Internal Server Error." })
@@ -47,16 +47,23 @@ export const updateShift = async (req, res) => {
 }
 
 // to delete shift
-export const deleteShift = async (req, res) => {
+const deleteShift = async (req, res) => {
     try {
         const id = req.params.id
-        const shiftExist = await Shift.findOne({ _id: id })
+        const shiftExist = await findShiftById(id);
         if (!shiftExist) {
             return res.status(404).json({ Message: "Shift not found" })
         }
-        await Shift.findByIdAndDelete(id, req.body, { new: true });
+        await deleteShiftById(id, req.body);
         res.status(204).json({ Message: "Shift deleted successfully" })
     } catch (error) {
         return res.status(500).json({ Message: "Internal Server Error." })
     }
+}
+
+module.exports = {
+    getShift,
+    addShift,
+    updateShift,
+    deleteShift
 }

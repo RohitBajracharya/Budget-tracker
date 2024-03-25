@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const shiftSchema = new mongoose.Schema({
     name: {
@@ -15,4 +15,4 @@ const shiftSchema = new mongoose.Schema({
     }
 })
 
-export default mongoose.model("shifts", shiftSchema)
+module.exports = mongoose.model("Shift", shiftSchema)

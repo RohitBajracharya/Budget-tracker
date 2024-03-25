@@ -1,8 +1,18 @@
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import ShiftContainer from "./ShiftContainer";
+import Axios from "axios";
+import { useEffect, useState } from "react";
+import ShiftContainer from "../Components/ShiftContainer.jsx";
 
 export default function Card() {
+  const [shifts, setShifts] = useState([]);
+
+  useEffect(() => {
+    Axios.get("http://localhost:5001/api/shift/").then((res) => {
+      setShifts(res.data);
+    }, []);
+  });
+
   return (
     <div className="page-container">
       <div className="card-container">
@@ -25,9 +35,18 @@ export default function Card() {
           <h2 className="top-budget">Top monthly budgets</h2>
           <FontAwesomeIcon icon={faChevronRight} className="suffix-icon" />
         </div>
-        <ShiftContainer />
-        <ShiftContainer />
-        <ShiftContainer />
+
+        {shifts.map((shift) => {
+          const { _id, name, budgetSpent, budgetAvailable } = shift;
+          return (
+            <ShiftContainer
+              key={_id}
+              shiftName={name}
+              budgetSpent={budgetSpent}
+              budgetAvailable={budgetAvailable}
+            />
+          );
+        })}
       </div>
     </div>
   );
