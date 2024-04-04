@@ -1,28 +1,29 @@
 import Shift from "../model/shift.model.js";
 
-const getAllShifts = async () => {
+const getAllShiftsByUserId = async (userId) => {
     try {
-        return await Shift.find();
+        return await Shift.find({ user: userId });
     } catch (error) {
         console.log("Error in service: " + error)
         throw error;
     }
 }
 
-const findExistingShift = async (name) => {
+const findExistingShift = async (name, userId) => {
     try {
-        return await Shift.findOne({ name })
+        return await Shift.findOne({ $and: [{ name }, { userId }] })
     } catch (error) {
         console.log("Error in service: " + error)
         throw error;
     }
 }
 
-const saveShift = async (name, budgetSpent, budgetAvailable) => {
+const saveShift = async (name, budgetSpent, budgetAvailable, userId) => {
     const newShift = new Shift({
         name: name,
         budgetSpent: budgetSpent,
         budgetAvailable: budgetAvailable,
+        user: userId
     });
     try {
         return await newShift.save()
@@ -60,6 +61,6 @@ const deleteShiftById = async (id) => {
 }
 
 export {
-    deleteShiftById, findExistingShift, findShiftById, getAllShifts, saveShift, updateShiftById
+    deleteShiftById, findExistingShift, findShiftById, getAllShiftsByUserId, saveShift, updateShiftById
 };
 

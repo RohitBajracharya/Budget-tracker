@@ -1,10 +1,11 @@
 import Shift from "../model/shift.model.js";
-import { deleteShiftById, findExistingShift, findShiftById, getAllShifts, saveShift, updateShiftById } from "../services/shift.services.js";
+import { deleteShiftById, findExistingShift, findShiftById, getAllShiftsByUserId, saveShift, updateShiftById } from "../services/shift.services.js";
 
 //get all shift
 const getShift = async (req, res) => {
     try {
-        const shifts = await getAllShifts();
+        const shifts = await getAllShiftsByUserId(req.user._id);
+        console.log("shifts", shifts)
         if (shifts.length === 0) {
             return res.status(404).json({ Message: "No Shift Avaiable." })
         }
@@ -19,11 +20,12 @@ const getShift = async (req, res) => {
 const addShift = async (req, res) => {
     try {
         const { name, budgetSpent, budgetAvailable } = new Shift(req.body)
-        const shiftExist = await findExistingShift(name);
+        const userId = req.user._id
+        const shiftExist = await findExistingShift(name, userId);
         if (shiftExist) {
             return res.status(409).json({ Message: "Shift already Exist" })
         }
-        const savedShift = await saveShift(name, budgetSpent, budgetAvailable);
+        const savedShift = await saveShift(name, budgetSpent, budgetAvailable, userId);
         res.status(201).json({ Success: true, message: "Shift added successfully", savedShift })
     } catch (error) {
         return res.status(500).json({ Message: "Internal Server Error." })
