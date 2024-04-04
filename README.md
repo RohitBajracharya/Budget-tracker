@@ -1,4 +1,4 @@
-# ScalaTech-1st-Task
+# Shift Management
 ## Technology used
 1. MongoDB
 2. Express JS
