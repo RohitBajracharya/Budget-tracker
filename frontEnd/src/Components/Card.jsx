@@ -36,14 +36,34 @@ export default function Card() {
           <FontAwesomeIcon icon={faChevronRight} className="suffix-icon" />
         </div>
 
+        <ShiftContainer
+          key="1"
+          shiftName="Restaurant"
+          budgetSpent="99"
+          budgetAvailable="1000"
+        />
+        <ShiftContainer
+          key="1"
+          shiftName="Groceries"
+          budgetSpent="99"
+          budgetAvailable="1000"
+        />
+
+        <ShiftContainer
+          key="1"
+          shiftName="Groceries"
+          budgetSpent="99"
+          budgetAvailable="1000"
+        />
+
         {shifts.map((shift) => {
           const { _id, name, budgetSpent, budgetAvailable } = shift;
           return (
             <ShiftContainer
               key={_id}
-              shiftName={name}
-              budgetSpent={budgetSpent}
-              budgetAvailable={budgetAvailable}
+              shiftName={"name"}
+              budgetSpent={"budgetSpent"}
+              budgetAvailable={"budgetAvailable"}
             />
           );
         })}

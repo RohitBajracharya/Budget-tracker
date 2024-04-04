@@ -1,22 +1,20 @@
-const cors = require("cors")
-const dotenv = require("dotenv")
-const express = require("express")
-const mongoose = require("mongoose")
-const route = require("./routes/shiftRoute.js")
+import dotenv from "dotenv";
+import { app } from "./app.js";
+import connectDB from "./db/index.js";
 
-const app = express();
-app.use(cors())
-app.use(express.json())
-dotenv.config()
+dotenv.config({ path: '../server/.env' })
+const PORT = process.env.PORT || 8000;
 
-app.use("/api/shift", route)
-
-const PORT = process.env.PORT || 5000;
-const MONGOURL = process.env.MONGO_URL;
-
-mongoose.connect(MONGOURL).then(() => {
-    console.log("Database connected successfully")
-    app.listen(PORT, () => {
-        console.log(`Server is running on port: ${PORT}`)
+connectDB()
+    .then(() => {
+        app.on("error", (error) => {
+            console.log("ERRR: ", error);
+            throw error
+        })
+        app.listen(PORT, () => {
+            console.log(`Server is running on port: ${PORT}`)
+        })
     })
-}).catch(error => console.log(error));
+    .catch((error) => {
+        console.error("MONGO DB connection failed!!! ", error);
+    })
