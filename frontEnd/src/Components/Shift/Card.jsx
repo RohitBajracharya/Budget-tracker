@@ -2,7 +2,7 @@ import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Axios from "axios";
 import { useEffect, useState } from "react";
-import ShiftContainer from "../Components/ShiftContainer.jsx";
+import ShiftContainer from "./ShiftContainer.jsx";
 
 export default function Card() {
   const [shifts, setShifts] = useState([]);

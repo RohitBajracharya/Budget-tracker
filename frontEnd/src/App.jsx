@@ -1,13 +1,16 @@
-import "../src/style/card.css";
-import Card from "./Components/Card";
-// import "../src/style/form.css";
-// import Form from "./Components/Form";
+import { Route, Routes } from "react-router-dom";
+import { Login } from "./Components/Auth/Login";
+import { SignUp } from "./Components/Auth/Signup";
 
 function App() {
   return (
-    <>
-      <Card />
-    </>
+    <Routes>
+      <Route path="/signup" element={<SignUp />} />
+      <Route path="/login" element={<Login />} />
+      {/* <Route path="/" element={<Navbar />} /> */}
+      {/* <Route path="/home" element={<Card />} />
+      <Route path="/add-Shift" element={<AddShiftForm />} /> */}
+    </Routes>
   );
 }
 
