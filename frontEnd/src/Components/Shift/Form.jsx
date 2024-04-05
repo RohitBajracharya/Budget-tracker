@@ -5,6 +5,7 @@ import {
   faHeading,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import "../../style/form.css";
 
 export default function AddShiftForm() {
   return (

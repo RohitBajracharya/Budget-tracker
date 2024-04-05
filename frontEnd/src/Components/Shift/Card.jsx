@@ -2,6 +2,7 @@ import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Axios from "axios";
 import { useEffect, useState } from "react";
+import "../../style/card.css";
 import ShiftContainer from "./ShiftContainer.jsx";
 
 export default function Card() {
@@ -9,7 +10,7 @@ export default function Card() {
 
   useEffect(() => {
     Axios.get("http://localhost:5001/api/shift/").then((res) => {
-      setShifts(res.data);
+      console.log(res);
     }, []);
   });
 
@@ -17,8 +18,8 @@ export default function Card() {
     <div className="page-container">
       <div className="card-container">
         <div>
-          <h1 className="title-lg ">September budget</h1>
-          <h4 className="title-sm">
+          <h1 className="title-lg-dark">September budget</h1>
+          <h4 className="title-sm-dark">
             Great job! You have
             <span className="total-budget"> $1,397 left</span>
           </h4>
@@ -36,7 +37,7 @@ export default function Card() {
           <FontAwesomeIcon icon={faChevronRight} className="suffix-icon" />
         </div>
 
-        <ShiftContainer
+        {/* <ShiftContainer
           key="1"
           shiftName="Restaurant"
           budgetSpent="99"
@@ -54,7 +55,7 @@ export default function Card() {
           shiftName="Groceries"
           budgetSpent="99"
           budgetAvailable="1000"
-        />
+        /> */}
 
         {shifts.map((shift) => {
           const { _id, name, budgetSpent, budgetAvailable } = shift;

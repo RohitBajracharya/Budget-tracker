@@ -1,19 +1,45 @@
-import axios from "axios";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
+import axios from "axios";
 import "./LoginSignup.css";
 
 export const SignUp = () => {
-  const [fullName, setFullName] = useState();
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-  const handleSubmit = (e) => {
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  // const history = useHistory();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    axios
-      .post("localhost:5001/api/users/signup", { fullName, email, password })
-      .then((result) => console.log(result))
-      .catch((err) => console.log(err));
+
+    try {
+      const response = await axios.post(
+        "http://localhost:5001/api/users/signup",
+        {
+          fullName: fullName,
+          email: email,
+          password: password,
+        }
+      );
+
+      console.log("Data submitted successfully:", response.data);
+      const { success, message } = response.data;
+
+      if (success) {
+        setSuccessMessage(message);
+        // setTimeout(() => {
+        //   history.push("/login");
+        // }, 2000);
+      } else {
+        setErrorMessage(message);
+      }
+    } catch (error) {
+      console.error("Error submitting data:", error);
+      setErrorMessage("Error submitting data. Please try again.");
+    }
   };
 
   return (
@@ -50,7 +76,9 @@ export const SignUp = () => {
           </div>
         </div>
 
-        <div className="submit-container">Sign Up</div>
+        <button type="submit" className="submit-container">
+          Sign Up
+        </button>
         <div className="divider"></div>
         <div className="have-account-container">
           Already Have An Account?{" "}
@@ -64,3 +92,5 @@ export const SignUp = () => {
     </div>
   );
 };
+
+export default SignUp;

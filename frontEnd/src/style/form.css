@@ -1,5 +1,5 @@
 body {
-  background-color: rgb(27, 26, 26);
+  background: rgb(27, 26, 26);
   font-family: "Segoe UI", sans-serif;
 }
 .title-lg {
@@ -93,5 +93,3 @@ body {
   color: rgb(4, 1, 41);
   cursor: pointer;
 }
-
-

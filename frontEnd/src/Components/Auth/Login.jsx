@@ -1,9 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
+import axios from "axios";
 import "./LoginSignup.css";
 
 export const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post(
+        "http://localhost:5001/api/users/login",
+        {
+          email: email,
+          password: password,
+        }
+      );
+
+      console.log("Data submitted successfully:", response.data);
+      const { success, message } = response.data;
+
+      if (success) {
+        setSuccessMessage(message);
+      } else {
+        setErrorMessage(message);
+      }
+    } catch (error) {
+      console.error("Error submitting data:", error);
+      setErrorMessage("Error submitting data. Please try again.");
+    }
+  };
   return (
     <div>
       <div className="container">
@@ -11,21 +41,29 @@ export const Login = () => {
           <div className="text">Login</div>
           <div className="underline"></div>
         </div>
-        <form action="">
+        <form method="post" onSubmit={handleSubmit}>
           <div className="inputs">
             <div className="input">
               <img src="images/email.png" alt="" />
-              <input type="email" placeholder="Email" />
+              <input
+                type="email"
+                placeholder="Email"
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </div>
             <div className="input">
               <img src="images/password.png" alt="" />
-              <input type="password" placeholder="Password" />
+              <input
+                type="password"
+                placeholder="Password"
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </div>
           </div>
 
-          <Link to="/" className="submit-container no-underline">
+          <button type="submit" className="submit-container no-underline">
             Login
-          </Link>
+          </button>
           <div className="divider"></div>
           <div className="have-account-container">
             Don't Have An Account?{" "}
