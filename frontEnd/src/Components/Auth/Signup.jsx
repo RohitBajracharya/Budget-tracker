@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-import axios from "axios";
+import api from "../..";
 import "./LoginSignup.css";
 
 export const SignUp = () => {
@@ -10,20 +10,16 @@ export const SignUp = () => {
   const [password, setPassword] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  // const history = useHistory();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(
-        "http://localhost:5001/api/users/signup",
-        {
-          fullName: fullName,
-          email: email,
-          password: password,
-        }
-      );
+      const response = await api.post("/users/signup", {
+        fullName: fullName,
+        email: email,
+        password: password,
+      });
 
       console.log("Data submitted successfully:", response.data);
       const { success, message } = response.data;
@@ -76,7 +72,7 @@ export const SignUp = () => {
           </div>
         </div>
 
-        <button type="submit" className="submit-container">
+        <button type="submit" className="submit-container no-underline">
           Sign Up
         </button>
         <div className="divider"></div>

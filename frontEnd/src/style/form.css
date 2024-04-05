@@ -1,6 +1,17 @@
-body {
-  background: rgb(27, 26, 26);
-  font-family: "Segoe UI", sans-serif;
+.form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  margin: 50px;
+}
+.inside-container {
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: rgb(27, 26, 26);
+  height: auto;
+  width: 500px;
 }
 .title-lg {
   color: white;

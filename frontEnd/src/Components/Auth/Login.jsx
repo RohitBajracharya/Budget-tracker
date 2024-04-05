@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-import axios from "axios";
+import api from "../..";
 import "./LoginSignup.css";
 
 export const Login = () => {
@@ -13,13 +13,10 @@ export const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(
-        "http://localhost:5001/api/users/login",
-        {
-          email: email,
-          password: password,
-        }
-      );
+      const response = await api.post("/users/login", {
+        email: email,
+        password: password,
+      });
 
       console.log("Data submitted successfully:", response.data);
       const { success, message } = response.data;
