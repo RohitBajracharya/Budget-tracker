@@ -1,22 +1,72 @@
-import { faMicrochip } from "@fortawesome/free-solid-svg-icons";
+import { faMicrochip, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-export default function ShiftContainer(props) {
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+
+export default function ShiftContainer(shiftData) {
+  const navigate = useNavigate();
+  const [shiftName, setShiftName] = useState(shiftData.shiftName);
+  const [budgetSpent, setBudgetSpent] = useState(shiftData.budgetSpent);
+  const [budgetAvailable, setBudgetAvailable] = useState(
+    shiftData.budgetAvailable
+  );
+  useEffect(() => {
+    setShiftName(shiftData.shiftName);
+    setBudgetSpent(shiftData.budgetSpent);
+    setBudgetAvailable(shiftData.budgetAvailable);
+  }, [shiftData]);
+
+  const handleUpdateEvent = () => {
+    navigate("/update-shift", { state: { shift: shiftData } });
+  };
+  const handleDelete = async () => {
+    try {
+      console.log(
+        `http://localhost:5001/api/shift/delete-shift/${shiftData.id}`
+      );
+
+      const response = await axios.delete(
+        `http://localhost:5001/api/shift/delete-shift/${shiftData.id}`,
+        {
+          withCredentials: true,
+        }
+      );
+      const { message } = response.data;
+      toast.success(message);
+      navigate("/");
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.message || "An error occurred while deleting.";
+      toast.error(errorMessage);
+    }
+  };
   return (
-    <div className="shift-container" key={props.id}>
-      <div className="name-icon-container">
-        <div className="icon-container">
-          <FontAwesomeIcon icon={faMicrochip} className="shift-item" />
+    <div className="main-shift-container" key={shiftData.id}>
+      <div className="shift-container" onClick={handleUpdateEvent}>
+        <div className="name-icon-container">
+          <div className="icon-container">
+            <FontAwesomeIcon icon={faMicrochip} className="shift-item" />
+          </div>
+          <div className="shift-name">
+            <h3>{shiftName}</h3>
+          </div>
         </div>
-        <div className="shift-name">
-          <h3>{props.shiftName}</h3>
+        <div className="budget-container">
+          <h4>
+            ${budgetSpent}
+            <span className="title-sm"> out of ${budgetAvailable}</span>
+          </h4>
         </div>
       </div>
-      <div className="budget-container">
-        <h4>
-          ${props.budgetSpent}
-          <span className="title-sm"> out of ${props.budgetAvailable}</span>
-        </h4>
+      <div className="delete-container">
+        <FontAwesomeIcon
+          icon={faTrash}
+          className="delete-icon"
+          onClick={handleDelete}
+        />
       </div>
     </div>
   );

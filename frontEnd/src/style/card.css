@@ -62,10 +62,17 @@ body {
 .suffix-icon {
   color: rgb(99, 98, 98);
 }
+.main-shift-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
 .shift-container {
   display: flex;
   flex-direction: row;
   align-items: center;
+  width: 100%;
   justify-content: space-between;
   border-bottom: 1px solid rgb(121, 121, 121);
 }
@@ -85,4 +92,11 @@ body {
 .shift-item {
   align-items: center;
   height: 20px;
+}
+.delete-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  width: 10%;
 }

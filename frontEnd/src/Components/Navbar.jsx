@@ -1,9 +1,34 @@
+import axios from "axios";
+import Cookies from "js-cookie";
 import { FaRegUserCircle } from "react-icons/fa";
 import { MdArrowDropDown } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import "./navbar.css";
 
 function NavigationBar() {
+  const navigate = useNavigate();
+  const handleLogout = async () => {
+    try {
+      const response = await axios.post(
+        `http://localhost:5001/api/users/logout`,
+        {
+          withCredentials: true,
+        }
+      );
+      const { message } = response.data;
+
+      Cookies.remove("accessToken");
+
+      toast.success(message);
+      navigate("/login");
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.message || "An error occurred while loging out.";
+      toast.error(errorMessage);
+    }
+  };
+
   return (
     <nav className="navbar">
       <div className="navbar-brand">Shift Management System</div>
@@ -24,7 +49,9 @@ function NavigationBar() {
           </a>
           <ul className="dropdown-menu">
             <li>
-              <a href="#">Logout</a>
+              <a href="#" onClick={handleLogout}>
+                Logout
+              </a>
             </li>
           </ul>
         </li>

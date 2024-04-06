@@ -23,7 +23,6 @@ export const Login = () => {
         }
       );
       const { message } = response.data;
-      console.log(response);
       const { accessToken } = response.data.data;
 
       Cookies.set("accessToken", accessToken, { expires: 7 });

@@ -4,6 +4,7 @@ const shiftSchema = new Schema({
     shiftName: {
         type: String,
         required: true,
+        unique: true,
     },
     budgetYear: {
         type: Number,

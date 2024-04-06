@@ -15,6 +15,7 @@ export default function Card() {
         const response = await Axios.get("http://localhost:5001/api/shift/", {
           withCredentials: true,
         });
+        // console.log("response::", response);
         setShifts(response.data.shifts);
       } catch (error) {
         const { Message } = error.response.data;
@@ -24,7 +25,7 @@ export default function Card() {
     };
 
     fetchShifts();
-  }, [setShifts]); // Execute this effect only once on component mount
+  }, [setShifts]);
 
   return (
     <div className="page-container">
@@ -49,10 +50,11 @@ export default function Card() {
           <FontAwesomeIcon icon={faChevronRight} className="suffix-icon" />
         </div>
 
-        {/* Render ShiftContainer for each shift */}
         {shifts.map((shift) => (
           <ShiftContainer
             key={shift._id}
+            id={shift._id}
+            budgetYear={shift.budgetYear}
             shiftName={shift.shiftName}
             budgetSpent={shift.budgetSpent}
             budgetAvailable={shift.budgetAvailable}

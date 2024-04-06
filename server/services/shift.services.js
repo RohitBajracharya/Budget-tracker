@@ -9,9 +9,16 @@ const getAllShiftsByUserId = async (userId) => {
     }
 }
 
-const findExistingShift = async (shiftName, userId) => {
+const findExistingShift = async (shiftName, user) => {
     try {
-        return await Shift.findOne({ $and: [{ shiftName }, { userId }] })
+        console.log("1");
+        const existingShift = await Shift.findOne({ $and: [{ shiftName }, { user }] });
+        console.log("2");
+        if (!existingShift) {
+            console.log("No existing shift found.");
+            return null; // Return null if no document is found
+        }
+        return existingShift
     } catch (error) {
         console.log("Error in service: " + error)
         throw error;
@@ -44,9 +51,18 @@ const findShiftById = async (id) => {
     }
 }
 
-const updateShiftById = async (id, req) => {
+const updateShiftById = async (id, budgetYear, shiftName, budgetSpent, budgetAvailable, userId) => {
     try {
-        return await Shift.findByIdAndUpdate(id, req.body, { new: true })
+        const updateShift = {
+
+            budgetYear: budgetYear,
+            shiftName: shiftName,
+            budgetSpent: budgetSpent,
+            budgetAvailable: budgetAvailable,
+            user: userId
+
+        };
+        return await Shift.findByIdAndUpdate(id, updateShift, { new: true })
     } catch (error) {
         console.log("Error in service: " + error)
         throw error;
