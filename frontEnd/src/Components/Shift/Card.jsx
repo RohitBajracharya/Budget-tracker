@@ -15,7 +15,6 @@ export default function Card() {
         const response = await Axios.get("http://localhost:5001/api/shift/", {
           withCredentials: true,
         });
-        // console.log("response::", response);
         setShifts(response.data.shifts);
       } catch (error) {
         const { Message } = error.response.data;

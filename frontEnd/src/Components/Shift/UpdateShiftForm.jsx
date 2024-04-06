@@ -43,7 +43,6 @@ export default function UpdateShiftForm() {
           withCredentials: true,
         }
       );
-      console.log("message", response.data);
       const { Message } = response.data;
       toast(Message);
       navigate("/");

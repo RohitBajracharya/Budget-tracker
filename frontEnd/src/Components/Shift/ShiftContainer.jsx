@@ -24,10 +24,6 @@ export default function ShiftContainer(shiftData) {
   };
   const handleDelete = async () => {
     try {
-      console.log(
-        `http://localhost:5001/api/shift/delete-shift/${shiftData.id}`
-      );
-
       const response = await axios.delete(
         `http://localhost:5001/api/shift/delete-shift/${shiftData.id}`,
         {
