@@ -1,8 +1,12 @@
 import { Schema, model } from "mongoose";
 
 const shiftSchema = new Schema({
-    name: {
+    shiftName: {
         type: String,
+        required: true,
+    },
+    budgetYear: {
+        type: Number,
         required: true,
     },
     budgetSpent: {

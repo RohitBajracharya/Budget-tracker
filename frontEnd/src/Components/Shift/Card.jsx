@@ -2,6 +2,7 @@ import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Axios from "axios";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import "../../style/card.css";
 import ShiftContainer from "./ShiftContainer.jsx";
 
@@ -9,10 +10,21 @@ export default function Card() {
   const [shifts, setShifts] = useState([]);
 
   useEffect(() => {
-    Axios.get("http://localhost:5001/api/shift/").then((res) => {
-      console.log(res);
-    }, []);
-  });
+    const fetchShifts = async () => {
+      try {
+        const response = await Axios.get("http://localhost:5001/api/shift/", {
+          withCredentials: true,
+        });
+        setShifts(response.data.shifts);
+      } catch (error) {
+        const { Message } = error.response.data;
+        toast.error(Message);
+        console.error("Error fetching shifts:", error);
+      }
+    };
+
+    fetchShifts();
+  }, [setShifts]); // Execute this effect only once on component mount
 
   return (
     <div className="page-container">
@@ -37,37 +49,15 @@ export default function Card() {
           <FontAwesomeIcon icon={faChevronRight} className="suffix-icon" />
         </div>
 
-        {/* <ShiftContainer
-          key="1"
-          shiftName="Restaurant"
-          budgetSpent="99"
-          budgetAvailable="1000"
-        />
-        <ShiftContainer
-          key="1"
-          shiftName="Groceries"
-          budgetSpent="99"
-          budgetAvailable="1000"
-        />
-
-        <ShiftContainer
-          key="1"
-          shiftName="Groceries"
-          budgetSpent="99"
-          budgetAvailable="1000"
-        /> */}
-
-        {shifts.map((shift) => {
-          const { _id, name, budgetSpent, budgetAvailable } = shift;
-          return (
-            <ShiftContainer
-              key={_id}
-              shiftName={"name"}
-              budgetSpent={"budgetSpent"}
-              budgetAvailable={"budgetAvailable"}
-            />
-          );
-        })}
+        {/* Render ShiftContainer for each shift */}
+        {shifts.map((shift) => (
+          <ShiftContainer
+            key={shift._id}
+            shiftName={shift.shiftName}
+            budgetSpent={shift.budgetSpent}
+            budgetAvailable={shift.budgetAvailable}
+          />
+        ))}
       </div>
     </div>
   );

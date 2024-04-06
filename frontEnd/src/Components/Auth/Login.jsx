@@ -1,34 +1,37 @@
+import Cookies from "js-cookie";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
-import api from "../..";
+import axios from "axios";
 import "./LoginSignup.css";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await api.post("/users/login", {
-        email: email,
-        password: password,
-      });
+      const response = await axios.post(
+        "http://localhost:5001/api/users/login",
+        {
+          email,
+          password,
+        }
+      );
+      const { message } = response.data;
+      console.log(response);
+      const { accessToken } = response.data.data;
 
-      console.log("Data submitted successfully:", response.data);
-      const { success, message } = response.data;
-
-      if (success) {
-        setSuccessMessage(message);
-      } else {
-        setErrorMessage(message);
-      }
+      Cookies.set("accessToken", accessToken, { expires: 7 });
+      toast(message);
+      navigate("/");
     } catch (error) {
-      console.error("Error submitting data:", error);
-      setErrorMessage("Error submitting data. Please try again.");
+      const { message } = error.response.data;
+      toast.error(message);
     }
   };
   return (
@@ -44,6 +47,7 @@ export const Login = () => {
               <img src="images/email.png" alt="" />
               <input
                 type="email"
+                name="email"
                 placeholder="Email"
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -52,6 +56,7 @@ export const Login = () => {
               <img src="images/password.png" alt="" />
               <input
                 type="password"
+                name="password"
                 placeholder="Password"
                 onChange={(e) => setPassword(e.target.value)}
               />

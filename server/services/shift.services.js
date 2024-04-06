@@ -9,23 +9,25 @@ const getAllShiftsByUserId = async (userId) => {
     }
 }
 
-const findExistingShift = async (name, userId) => {
+const findExistingShift = async (shiftName, userId) => {
     try {
-        return await Shift.findOne({ $and: [{ name }, { userId }] })
+        return await Shift.findOne({ $and: [{ shiftName }, { userId }] })
     } catch (error) {
         console.log("Error in service: " + error)
         throw error;
     }
 }
 
-const saveShift = async (name, budgetSpent, budgetAvailable, userId) => {
+const saveShift = async (shiftName, budgetYear, budgetSpent, budgetAvailable, userId) => {
     const newShift = new Shift({
-        name: name,
+        budgetYear: budgetYear,
+        shiftName: shiftName,
         budgetSpent: budgetSpent,
         budgetAvailable: budgetAvailable,
         user: userId
     });
     try {
+
         return await newShift.save()
     } catch (error) {
         console.log("Error in service: " + error)

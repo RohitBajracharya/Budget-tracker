@@ -12,7 +12,6 @@ function App() {
       <Routes>
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
-        {/* <Route path="/home" element={<NavigationBar />} /> */}
         <Route path="/" element={<Card />} />
         <Route path="/add-Shift" element={<AddShiftForm />} />
       </Routes>

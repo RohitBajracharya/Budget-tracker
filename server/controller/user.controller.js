@@ -6,7 +6,7 @@ import { ApiResponse } from "../utils/ApiResponse.js"
 const registerUser = async (req, res) => {
     const { fullName, email, password } = req.body
     if ([fullName, email, password].some((field) => field?.trim() === "")) {
-        return res.status(404).json(new ApiError(404, "All fields are required"))
+        return res.status(400).json(new ApiError(404, "All fields are required"))
     }
 
     try {
@@ -28,11 +28,11 @@ const loginUser = async (req, res) => {
     const { email, password } = req.body
     try {
         if (!email && !password) {
-            return res.status(404).json(new ApiError(404, "Email and Password are required"))
+            return res.status(400).json(new ApiError(400, "Email and Password are required"))
         }
         const user = await findExistingUser(email);
         if (!user) {
-            return res.status(404).json(new ApiError(404, "Email not found"))
+            return res.status(400).json(new ApiError(400, "Email not found"))
         }
         const isPasswordCorrect = await user.isPasswordCorrect(password)
         if (!isPasswordCorrect) {
@@ -40,6 +40,10 @@ const loginUser = async (req, res) => {
         }
         const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(user._id)
 
+        // res.cookie("accessToken", accessToken, COOKIE_OPTIONS);
+        // res.cookie("refreshToken", refreshToken, COOKIE_OPTIONS);
+
+        // return res.status(200).json(new ApiResponse(200, user, "User Login Successfully"));
         return res.status(200)
             .cookie("accessToken", accessToken, COOKIE_OPTIONS)
             .cookie("refreshToken", refreshToken, COOKIE_OPTIONS)
@@ -69,6 +73,7 @@ const generateAccessAndRefreshTokens = async (userId) => {
         const user = await findUserById(userId)
         const accessToken = user.generateAccessToken()
         const refreshToken = user.generateRefreshToken()
+        // user.accessToken = accessToken
         user.refreshToken = refreshToken
         await user.save({ validateBeforeSave: false })
         return { accessToken, refreshToken }

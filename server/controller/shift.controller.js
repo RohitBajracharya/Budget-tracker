@@ -1,4 +1,3 @@
-import Shift from "../model/shift.model.js";
 import { deleteShiftById, findExistingShift, findShiftById, getAllShiftsByUserId, saveShift, updateShiftById } from "../services/shift.services.js";
 
 //get all shift
@@ -19,13 +18,16 @@ const getShift = async (req, res) => {
 // to add new shift
 const addShift = async (req, res) => {
     try {
-        const { name, budgetSpent, budgetAvailable } = new Shift(req.body)
+        const { budgetYear, shiftName, budgetSpent, budgetAvailable } = req.body
+        console.log("budgetYear", budgetYear)
         const userId = req.user._id
-        const shiftExist = await findExistingShift(name, userId);
+        const shiftExist = await findExistingShift(shiftName, userId);
         if (shiftExist) {
             return res.status(409).json({ Message: "Shift already Exist" })
         }
-        const savedShift = await saveShift(name, budgetSpent, budgetAvailable, userId);
+        console.log("1")
+        const savedShift = await saveShift(shiftName, budgetYear, budgetSpent, budgetAvailable, userId);
+        console.log("Saved")
         res.status(201).json({ Success: true, message: "Shift added successfully", savedShift })
     } catch (error) {
         return res.status(500).json({ Message: "Internal Server Error." })
