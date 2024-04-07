@@ -18,6 +18,18 @@ const shiftSchema = new Schema({
         type: Number,
         required: true,
     },
+    totalBudgetSpent: {
+        type: Number,
+        default: 0
+    },
+    totalBudgetAvailable: {
+        type: Number,
+        default: 0
+    },
+    totalBudgetRemainging: {
+        type: Number,
+        default: 0
+    },
     user: {
         type: Schema.Types.ObjectId,
         ref: "User"
