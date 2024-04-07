@@ -14,7 +14,7 @@ import "../../style/form.css";
 export default function UpdateShiftForm() {
   const location = useLocation();
   const navigate = useNavigate();
-  const [budgetYear, setBudgetYear] = useState(0);
+  const [budgetYear, setBudgetYear] = useState("");
   const [shiftName, setShiftName] = useState("");
   const [budgetSpent, setBudgetSpent] = useState(0);
   const [budgetAvailable, setBudgetAvailable] = useState(0);
@@ -30,7 +30,7 @@ export default function UpdateShiftForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const id = location.state.shift.id;
+      const id = location.state.shift._id;
       const response = await axios.put(
         `http://localhost:5001/api/shift/update-shift/${id}`,
         {
@@ -81,7 +81,7 @@ export default function UpdateShiftForm() {
               className="budget-year-input"
               placeholder="Enter Budget Year"
               value={budgetYear}
-              onChange={(e) => setBudgetYear(parseInt(e.target.value))}
+              onChange={(e) => setBudgetYear(e.target.value)}
             />
           </div>
           <div>

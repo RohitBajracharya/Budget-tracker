@@ -1,4 +1,3 @@
-import Axios from "axios";
 import Cookies from "js-cookie";
 import { FaRegUserCircle } from "react-icons/fa";
 import { MdArrowDropDown } from "react-icons/md";
@@ -11,23 +10,9 @@ function NavigationBar() {
   const isLoggedIn = Cookies.get("accessToken");
 
   const handleLogout = async () => {
-    try {
-      const response = await Axios.post(
-        `http://localhost:5001/api/users/logout`,
-        {
-          withCredentials: true,
-        }
-      );
-      const { message } = response.data;
-      Cookies.remove("accessToken");
-
-      toast.success(message);
-      navigate("/login");
-    } catch (error) {
-      const errorMessage =
-        error.response?.data?.message || "An error occurred while loging out.";
-      toast.error(errorMessage);
-    }
+    Cookies.remove("accessToken");
+    toast("Logout successfully");
+    navigate("/");
   };
 
   return (

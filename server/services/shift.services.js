@@ -1,4 +1,3 @@
-import Budget from "../model/budget.model.js";
 import Shift from "../model/shift.model.js";
 
 const getAllShiftsByUserId = async (userId) => {
@@ -12,12 +11,9 @@ const getAllShiftsByUserId = async (userId) => {
 
 const findExistingShift = async (shiftName, user) => {
     try {
-        console.log("1");
         const existingShift = await Shift.findOne({ $and: [{ shiftName }, { user }] });
-        console.log("2");
         if (!existingShift) {
-            console.log("No existing shift found.");
-            return null; // Return null if no document is found
+            return null;
         }
         return existingShift
     } catch (error) {
@@ -79,31 +75,11 @@ const deleteShiftById = async (id) => {
     }
 }
 
-const getBudgetSpentAndBugdgetAvailable = async (userId) => {
-    try {
-        return await Shift.find({ user: userId }, { budgetSpent: 1, budgetAvailable: 1 });
-    } catch (error) {
-        console.log("Error in service: " + error)
-        throw error;
-    }
-}
 
-const updateTotalBudget = async (totalBudgetSpent, totalBudgetAvailable, totalBudgetRemaining, userId) => {
-    try {
-        const newBudget = new Budget({
-            totalBudgetSpent,
-            totalBudgetAvailable,
-            totalBudgetRemaining,
-            user: userId
-        })
-        return await newBudget.save();
-    } catch (error) {
-        console.log("Error in service: " + error)
-        throw error;
-    }
-}
+
+
 
 export {
-    deleteShiftById, findExistingShift, findShiftById, getAllShiftsByUserId, getBudgetSpentAndBugdgetAvailable, saveShift, updateShiftById, updateTotalBudget
+    deleteShiftById, findExistingShift, findShiftById, getAllShiftsByUserId, saveShift, updateShiftById
 };
 

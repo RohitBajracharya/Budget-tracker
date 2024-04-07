@@ -1,4 +1,5 @@
 import { COOKIE_OPTIONS } from "../constants.js"
+import { addBudgetByUserId } from "../services/budget.services.js"
 import { createNewUser, findExistingUser, findUserById, findUserByIdAndUpdateToken } from "../services/user.services.js"
 import { ApiError } from "../utils/ApiError.js"
 import { ApiResponse } from "../utils/ApiResponse.js"
@@ -18,6 +19,7 @@ const registerUser = async (req, res) => {
         if (!user) {
             return res.status(500).json(new ApiError(500, "User not created"))
         }
+        await addBudgetByUserId(user._id)
         return res.status(201).json(new ApiResponse(201, user, "User registered successfully"))
     } catch (error) {
         res.status(500).json(new ApiError(500, "Error while registering user"))
@@ -40,10 +42,6 @@ const loginUser = async (req, res) => {
         }
         const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(user._id)
 
-        // res.cookie("accessToken", accessToken, COOKIE_OPTIONS);
-        // res.cookie("refreshToken", refreshToken, COOKIE_OPTIONS);
-
-        // return res.status(200).json(new ApiResponse(200, user, "User Login Successfully"));
         return res.status(200)
             .cookie("accessToken", accessToken, COOKIE_OPTIONS)
             .cookie("refreshToken", refreshToken, COOKIE_OPTIONS)
@@ -73,7 +71,7 @@ const generateAccessAndRefreshTokens = async (userId) => {
         const user = await findUserById(userId)
         const accessToken = user.generateAccessToken()
         const refreshToken = user.generateRefreshToken()
-        // user.accessToken = accessToken
+        user.accessToken = accessToken
         user.refreshToken = refreshToken
         await user.save({ validateBeforeSave: false })
         return { accessToken, refreshToken }

@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-export default function ShiftContainer(shiftData) {
+export default function ShiftContainer({ shiftData }) {
   const navigate = useNavigate();
   const [shiftName, setShiftName] = useState(shiftData.shiftName);
   const [budgetSpent, setBudgetSpent] = useState(shiftData.budgetSpent);
@@ -25,13 +25,15 @@ export default function ShiftContainer(shiftData) {
   const handleDelete = async () => {
     try {
       const response = await axios.delete(
-        `http://localhost:5001/api/shift/delete-shift/${shiftData.id}`,
+        `http://localhost:5001/api/shift/delete-shift/${shiftData._id}`,
         {
           withCredentials: true,
         }
       );
-      const { message } = response.data;
-      toast.success(message);
+      
+      console.log("response", response.data);
+      const { Message } = response.data;
+      toast.success(Message);
       navigate("/");
     } catch (error) {
       const errorMessage =
@@ -40,7 +42,7 @@ export default function ShiftContainer(shiftData) {
     }
   };
   return (
-    <div className="main-shift-container" key={shiftData.id}>
+    <div className="main-shift-container" key={shiftData._id}>
       <div className="shift-container" onClick={handleUpdateEvent}>
         <div className="name-icon-container">
           <div className="icon-container">

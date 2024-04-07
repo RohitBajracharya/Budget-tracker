@@ -7,7 +7,7 @@ const shiftSchema = new Schema({
         unique: true,
     },
     budgetYear: {
-        type: Number,
+        type: String,
         required: true,
     },
     budgetSpent: {
@@ -17,18 +17,6 @@ const shiftSchema = new Schema({
     budgetAvailable: {
         type: Number,
         required: true,
-    },
-    totalBudgetSpent: {
-        type: Number,
-        default: 0
-    },
-    totalBudgetAvailable: {
-        type: Number,
-        default: 0
-    },
-    totalBudgetRemainging: {
-        type: Number,
-        default: 0
     },
     user: {
         type: Schema.Types.ObjectId,
