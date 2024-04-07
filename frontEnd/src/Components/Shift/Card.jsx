@@ -51,8 +51,6 @@ export default function Card() {
     fetchData();
   }, []);
 
-  console.log("shift: ", shifts);
-
   if (loading) {
     return <div>Loading...</div>;
   }
