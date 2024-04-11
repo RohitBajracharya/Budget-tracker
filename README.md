@@ -1,4 +1,4 @@
-# Shift Management
+# Budget Tracker
 ## Technology used
 1. MongoDB
 2. Express JS
